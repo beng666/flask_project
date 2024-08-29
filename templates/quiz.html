@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz</title>
+    <style>
+        body {
+            position: relative;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            background-color: #f1f1f1;
+            padding: 10px 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        .question h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .question input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .score {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quiz</h1>
+    <form method="post" action="{{ url_for('submit') }}">
+        <div class="question">
+            <h2>Question 1: What is your name?</h2>
+            <input type="text" name="username" required>
+        </div>
+
+        {% for i in range(questions|length) %}
+        <div class="question">
+            <h2>Question {{ i + 2 }}: {{ questions[i].question }}</h2>
+            {% if i == 3 %}
+                <!-- Question 4 için yazı alanı -->
+                <textarea name="question_{{ i }}" rows="4" required></textarea>
+            {% else %}
+                <input type="radio" name="question_{{ i }}" value="{{ questions[i].option1 }}" required> {{ questions[i].option1 }}<br>
+                <input type="radio" name="question_{{ i }}" value="{{ questions[i].option2 }}"> {{ questions[i].option2 }}<br>
+                <input type="radio" name="question_{{ i }}" value="{{ questions[i].option3 }}"> {{ questions[i].option3 }}<br>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <input type="submit" value="Submit Answers">
+
+        <div class="score">
+            Best Score: {{ best_score }}%
+        </div>
+    </form>
+
+    <footer>
+        Developed by Bengisu ATLI
+    </footer>
+</body>
+</html>
